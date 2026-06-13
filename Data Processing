@@ -1,0 +1,88 @@
+"""
+Data Preprocessing Script for Vending Machine Sales Analysis
+Cleans and transforms raw transaction data for analysis.
+"""
+
+import pandas as pd
+import os
+
+def load_and_clean(filepath: str) -> pd.DataFrame:
+    """Load raw Excel data and apply cleaning transformations."""
+    df = pd.read_excel(filepath)
+
+    # 1. Convert Timestamp to proper datetime (handles Excel serial dates)
+    if not pd.api.types.is_datetime64_any_dtype(df['Timestamp']):
+        df['Timestamp'] = pd.to_datetime(df['Timestamp'], origin='1899-12-30', unit='D')
+
+    # 2. Fix category typo: 'Sandwhich' -> 'Sandwich'
+    df['Category'] = df['Category'].replace({'Sandwhich': 'Sandwich'})
+
+    # 3. Standardize payment method casing
+    df['Payment'] = df['Payment'].str.strip().str.lower()
+
+    # 4. Extract time-based features
+    df['Date'] = df['Timestamp'].dt.date
+    df['Hour'] = df['Timestamp'].dt.hour
+    df['Week'] = df['Timestamp'].dt.isocalendar().week.astype(int)
+    df['Month_Num'] = df['Timestamp'].dt.month
+
+    # 5. Ensure correct month ordering
+    month_order = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August']
+    df['Month'] = pd.Categorical(df['Month'], categories=month_order, ordered=True)
+
+    # 6. Ensure correct day ordering
+    day_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    df['Day_of_Week'] = pd.Categorical(df['Day_of_Week'], categories=day_order, ordered=True)
+
+    # 7. Calculate unit price
+    df['Unit_Price'] = df['Value'] / df['Quantity']
+
+    # 8. Calculate tax amount
+    df['Tax_Amount'] = (df['Value'] * df['Tax Rate'] / (100 + df['Tax Rate'])).round(0).astype(int)
+    df['Pre_Tax_Value'] = df['Value'] - df['Tax_Amount']
+
+    # 9. Drop duplicate transactions (if any)
+    initial_len = len(df)
+    df = df.drop_duplicates(subset=['Timestamp', 'Machine', 'Product code', 'Value'])
+    dropped = initial_len - len(df)
+    if dropped > 0:
+        print(f"Dropped {dropped} duplicate rows")
+
+    # 10. Validate data
+    assert df['Value'].min() > 0, "Found non-positive transaction values"
+    assert df['Quantity'].min() > 0, "Found non-positive quantities"
+    assert df['Machine'].nunique() == 5, f"Expected 5 machines, found {df['Machine'].nunique()}"
+
+    print(f"Loaded {len(df)} transactions | {df['Timestamp'].min().date()} to {df['Timestamp'].max().date()}")
+    print(f"Categories: {list(df['Category'].unique())}")
+    print(f"Machines: {sorted(df['Machine'].unique())}")
+    return df
+
+
+def generate_summary(df: pd.DataFrame) -> dict:
+    """Generate summary statistics for the dataset."""
+    return {
+        'total_transactions': len(df),
+        'total_revenue': int(df['Value'].sum()),
+        'total_quantity': int(df['Quantity'].sum()),
+        'unique_products': df['Product'].nunique(),
+        'avg_transaction_value': round(df['Value'].mean(), 2),
+        'date_range': f"{df['Timestamp'].min().date()} to {df['Timestamp'].max().date()}",
+        'revenue_by_category': df.groupby('Category')['Value'].sum().to_dict(),
+        'revenue_by_machine': df.groupby('Machine')['Value'].sum().to_dict(),
+        'revenue_by_payment': df.groupby('Payment')['Value'].sum().to_dict(),
+    }
+
+
+if __name__ == '__main__':
+    input_path = os.path.join('data', 'vending_machine_sales.xlsx')
+    df = load_and_clean(input_path)
+
+    summary = generate_summary(df)
+    for key, val in summary.items():
+        print(f"  {key}: {val}")
+
+    # Save cleaned data
+    output_path = os.path.join('data', 'vending_machine_cleaned.csv')
+    df.to_csv(output_path, index=False)
+    print(f"\nCleaned data saved to {output_path}")

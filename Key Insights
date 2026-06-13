@@ -1,0 +1,61 @@
+# Vending Machine Sales Analysis — Key Insights & Recommendations
+
+## Executive Summary
+
+Analysis of 3,475 vending machine transactions (Jan–Aug 2023) across 5 machines reveals that **sandwiches are the primary revenue driver** (34.8% share), **credit card is the dominant payment method** (45.1%), and **Machine 3 consistently underperforms**. Monthly trends show stable revenue with a notable dip in June (–5.1%).
+
+---
+
+## Insight 1: Sandwiches Are the Revenue Engine
+
+Sandwiches generate ₹7,85,810 (34.8% of total revenue) despite having the fewest transactions (859 out of 3,475). The average sandwich transaction (₹915) is **60–66% higher** than other categories (₹550–576). All top-5 products by revenue are sandwiches.
+
+**Recommendation:** Prioritize sandwich stock availability. Consider adding 1–2 premium sandwich SKUs and reducing underperforming snack/drink SKUs.
+
+---
+
+## Insight 2: Machine 3 Needs Attention
+
+Machine 3 trails Machine 1 by ₹60,950 in revenue and has the lowest transaction count (650). Its sandwich revenue (₹1,34,740) is the weakest across all machines, suggesting it may be located in a lower-traffic area or facing operational issues.
+
+**Recommendation:** Audit Machine 3's location, uptime logs, and stock replenishment schedule. Consider relocating or improving signage.
+
+---
+
+## Insight 3: Mobile Payments Are Underutilized
+
+Mobile payments account for only 21.8% of revenue (₹4,92,860), significantly behind credit cards (45.1%) and cash (33.1%). This is consistent across all product categories.
+
+**Recommendation:** Introduce mobile-exclusive discounts (e.g., 5% off for mobile payments) or a loyalty program to shift users toward digital payments, reducing cash-handling overhead.
+
+---
+
+## Insight 4: March Surge, June Slump
+
+March saw the strongest month-over-month growth (+12.2%), while June experienced the deepest decline (–5.1%). Average transaction value peaked in April (₹686) and was lowest in January (₹620).
+
+**Recommendation:** Investigate the June dip — possible causes include seasonal patterns, machine downtime, or stock issues. Use March/April as a benchmark for promotional timing.
+
+---
+
+## Insight 5: Drink Pricing May Suppress Demand
+
+Drinks carry a 27% tax rate (vs 18% for all other categories) and contribute only 21.8% of revenue despite leading in transaction volume (897). This suggests price sensitivity in the category.
+
+**Recommendation:** Test bundle pricing (e.g., sandwich + drink combo at a small discount) to boost drink attachment rates without cutting individual drink prices.
+
+---
+
+## Insight 6: Weekday Performance Is Remarkably Stable
+
+Revenue varies only ₹30,840 between the best day (Wednesday: ₹3,38,060) and worst day (Friday: ₹3,07,220). Weekend sales remain strong, indicating machines serve both weekday workers and weekend visitors.
+
+**Recommendation:** No major day-specific intervention needed, but Friday could benefit from end-of-week promotions.
+
+---
+
+## Insight 7: Bottom Products Have Low Revenue, Not Low Volume
+
+The bottom-5 products by revenue (Doritos TangyTomato, Ritz CheeseCrisps, etc.) still move 103–114 units each. Their low revenue is due to low unit price, not unpopularity.
+
+**Recommendation:** These are "traffic drivers" — keep them stocked but consider replacing 1–2 of the weakest with higher-margin alternatives.
